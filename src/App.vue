@@ -5,10 +5,11 @@ export default {
   data() {
     return {
       newTodo: '',
+      hideCompleted: false,
       todos: [
-        { id: id++, text: 'Fill car with petrol'},
-        { id: id++, text: 'Get milk and eggs'},
-        { id: id++, text: 'Take dogs for a walk'}
+        { id: id++, text: 'Fill car with petrol', done: true},
+        { id: id++, text: 'Get milk and eggs', done: false},
+        { id: id++, text: 'Take dogs for a walk', done: true}
       ]
     }
   },
@@ -20,6 +21,11 @@ export default {
     removeTodo(todo) {
       this.todos = this.todos.filter((object) => object !== todo)
     }
+  },
+  computed: {
+    filteredTodos() {
+
+    }
   }
 }
 </script>
@@ -30,8 +36,16 @@ export default {
   <button @click="addTodo">Add "to do"</button>
   </form>
   <ul>
-  <li v-for="todo in todos" :key="todo.id">{{ todo.text }}
-  <button @click="removeTodo(todo)">x</button></li>
+  <li v-if="!hideCompleted" v-for="todo in todos" :key="todo.id">
+    <input type="checkbox" v-model="todo.done">
+    <span>{{ todo.text }} </span>
+  <button @click="removeTodo(todo)">x</button>
+  </li>
+  <li v-if="hideCompleted" v-for="todo in filteredTodos" :key="todo.id">
+    <input type="checkbox" v-model="todo.done">
+    <span>{{ todo.text }} </span>
+  <button @click="removeTodo(todo)">x</button>
+  </li>
   </ul>
 
 </template>
